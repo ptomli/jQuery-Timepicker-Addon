@@ -369,6 +369,21 @@
 		this._updateDatepicker(inst);
 	};
 
+	// http://github.com/trentrichardson/jQuery-Timepicker-Addon/issues#issue/2
+	$.datepicker._selectDay = function (id, month, year, td) {
+		var target = $(id);
+		if ($(td).hasClass(this._unselectableClass) || this._isDisabledDatepicker(target[0])) {
+			return;
+		}
+		$('.ui-state-active').removeClass('ui-state-active');
+		$(td).children('a').addClass('ui-state-active');
+		var inst = this._getInst(target[0]);
+		inst.selectedDay = inst.currentDay = $('a', td).html();
+		inst.selectedMonth = inst.currentMonth = month;
+		inst.selectedYear = inst.currentYear = year;
+		this._selectDate(id, this._formatDate(inst, inst.currentDay, inst.currentMonth, inst.currentYear));
+	};
+
 	$.datepicker._base_updateDatepicker = $.datepicker._updateDatepicker;
 	//#############################################################################################
 	// second bad hack :/ override datepicker so it triggers an event when changing the input field
